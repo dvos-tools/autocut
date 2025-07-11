@@ -1,0 +1,1 @@
+{"version":3,"file":"busInterfaces.d.ts","sourceRoot":"","sources":["../../../src/events/bus/busInterfaces.ts"],"names":[],"mappings":"AACA,MAAM,WAAW,SAAS,CAAC,CAAC;IACxB,IAAI,CAAC,KAAK,EAAE,CAAC,EAAE,OAAO,CAAC,EAAE,GAAG,GAAG,IAAI,CAAC;IAEpC,WAAW,CAAC,GAAG,EAAE,MAAM,GAAG,IAAI,CAAC;CAClC"}

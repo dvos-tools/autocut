@@ -1,0 +1,1 @@
+{"version":3,"file":"subscription.d.ts","sourceRoot":"","sources":["../../../src/events/consumer/subscription.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,gBAAgB,CAAA;AAE1C,MAAM,WAAW,aAAa;IAC1B,WAAW,IAAI,IAAI,CAAC;CACvB;AAED,qBAAa,YAAa,YAAW,aAAa;IAC9C,OAAO,CAAC,GAAG,CAAS;IACpB,OAAO,CAAC,QAAQ,CAAY;gBAEhB,QAAQ,EAAE,SAAS,EAAE,GAAG,EAAE,MAAM;IAK5C,WAAW;CAGd"}

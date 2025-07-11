@@ -1,0 +1,1 @@
+{"version":3,"file":"shortcutTriggerEvent.js","sourceRoot":"","sources":["../../src/shortcuts/shortcutTriggerEvent.ts"],"names":[],"mappings":";;;AAEA,MAAa,oBAAoB;IACzB,YAAY,CAAS;IAE5B,YAAY,YAAoB;QAC/B,IAAI,CAAC,YAAY,GAAG,YAAY,CAAC;IAClC,CAAC;IAED,MAAM;QACL,OAAO,CAAC,GAAG,CAAC,aAAa,GAAG,IAAI,CAAC,YAAY,GAAG,sBAAsB,CAAC,CAAA;IACxE,CAAC;CACD;AAVD,oDAUC"}

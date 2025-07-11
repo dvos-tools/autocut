@@ -1,0 +1,1 @@
+{"version":3,"file":"shortcutTriggerEvent.d.ts","sourceRoot":"","sources":["../../src/shortcuts/shortcutTriggerEvent.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,kBAAkB,CAAA;AAEzC,qBAAa,oBAAqB,YAAW,MAAM;IAC3C,YAAY,EAAE,MAAM,CAAC;gBAEhB,YAAY,EAAE,MAAM;IAIhC,MAAM;CAGN"}
