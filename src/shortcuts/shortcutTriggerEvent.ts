@@ -7,7 +7,7 @@ export class ShortcutTriggerEvent implements EventI {
 		this.shortcutName = shortcutName;
 	}
 
-	handle() {
+	async handle() {
 		console.log("The event: " + this.shortcutName + " has been triggered.")
 	}
 }

@@ -13,7 +13,7 @@ export class ShortcutScheduleEvent implements EventI{
 		this.cronDefinition = cronDefinition
 	} 
 
-	handle() {
+	async handle() {
 		console.log("the event: " + this.shortcutName + " has been triggered.")
 	}
 }
