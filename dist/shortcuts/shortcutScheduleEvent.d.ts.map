@@ -1,1 +1,0 @@
-{"version":3,"file":"shortcutScheduleEvent.d.ts","sourceRoot":"","sources":["../../src/shortcuts/shortcutScheduleEvent.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,kBAAkB,CAAA;AAEzC,qBAAa,qBAAsB,YAAW,MAAM;IAC5C,YAAY,EAAE,MAAM,CAAC;IAErB,cAAc,EAAE,MAAM,CAAC;gBAG7B,YAAY,EAAE,MAAM,EACpB,cAAc,EAAE,MAAM;IAMvB,MAAM;CAGN"}
