@@ -1,10 +1,10 @@
+import {shortcutManager} from "src/shortcuts";
 
 /*
- * BackgroundAgent is the background process runner. everything should inderectly go through this agent.
- * This Agent should never crash or recieve any fatal errors. If this agent gets in a state where 
+ * BackgroundAgent is the background process runner. everything should indirectly go through this agent.
+ * This Agent should never crash or receive any fatal errors. If this agent gets in a state where
  * it seems broken. the Agent should *always* try to fix itself and repair its state.
  */
-
 export class BackgroundAgent {
 	public isRunning: boolean = false;
 	private heartbeatInterval: NodeJS.Timeout | null = null;
@@ -25,6 +25,7 @@ export class BackgroundAgent {
 	public start(): void {
 		if (this.isRunning) return
 		console.log('Starting BackgroundAgent...');
+		shortcutManager.initializeShortcuts()
 
 		this.heartbeatInterval = setInterval(this.heartbeat, this.heartbeatIntervalMs);
 		process.on('uncaughtException', this.handleError);
@@ -67,16 +68,10 @@ export class BackgroundAgent {
 
 		const timestamp = new Date().toISOString();
 		console.log(`[${timestamp}] BackgroundAgent heartbeat - Running for ${this.getUptime()}ms`);
-		
-		// Reset error count on successful heartbeat
-		if (this.errorCount > 0) {
-			console.log(`Error count reset from ${this.errorCount} to 0`);
-			this.errorCount = 0;
-		}
 	}
 
 	/**
-	 * Handles Errors grafully and tries to fix itself
+	 * Handles Errors gracefully and tries to fix itself
 	 */
 	private handleError(error: Error | string): void {
 		this.errorCount++;
@@ -93,6 +88,7 @@ export class BackgroundAgent {
 
 	private restart(): void {
 		console.log('Restarting BackgroundAgent...');
+		this.errorCount = 0;
 		this.stop();
 		
 		setTimeout(() => {
