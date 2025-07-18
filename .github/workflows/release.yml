@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+    
+    - name: Create release archive
+      run: |
+        tar -czf autocut-${{ github.ref_name }}.tar.gz \
+          --exclude='.git' \
+          --exclude='node_modules' \
+          --exclude='dist' \
+          --exclude='.github' \
+          .
+    
+    - name: Calculate SHA256
+      run: echo "SHA256=$(shasum -a 256 autocut-${{ github.ref_name }}.tar.gz | cut -d' ' -f1)" >> $GITHUB_ENV
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: autocut-${{ github.ref_name }}.tar.gz
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update-tap:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/homebrew-autocut
+        token: ${{ secrets.TAP_TOKEN }}
+    
+    - name: Update formula
+      run: |
+        # Extract version from tag (remove 'v' prefix)
+        VERSION=${GITHUB_REF#refs/tags/v}
+        
+        # Update the formula file
+        sed -i "s/version \"[^\"]*\"/version \"$VERSION\"/" Formula/autocut.rb
+        sed -i "s/sha256 \"[^\"]*\"/sha256 \"${{ env.SHA256 }}\"/" Formula/autocut.rb
+        sed -i "s|url \"[^\"]*\"|url \"https://github.com/${{ github.repository }}/releases/download/v$VERSION/autocut-$VERSION.tar.gz\"|" Formula/autocut.rb
+    
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add Formula/autocut.rb
+        git commit -m "Update autocut to ${{ github.ref_name }}"
+        git push 

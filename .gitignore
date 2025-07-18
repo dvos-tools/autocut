@@ -23,6 +23,9 @@ build/
 logs/
 *.log
 
+# Homebrew tap (separate repository)
+homebrew-tap/
+
 # Runtime data
 pids/
 *.pid
