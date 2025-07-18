@@ -15,6 +15,34 @@ NC='\033[0m' # No Color
 # Configuration file path
 CONFIG_FILE="config.yml"
 
+# Function to detect if running as brew service
+is_brew_service() {
+    if [ -n "$HOMEBREW_PREFIX" ] || [ -d "/usr/local/opt/autocut" ] || [ -d "/opt/homebrew/opt/autocut" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function to get the correct config file path
+get_config_path() {
+    if is_brew_service; then
+        # If installed via brew, use the libexec directory
+        if [ -d "/usr/local/opt/autocut" ]; then
+            echo "/usr/local/opt/autocut/libexec/config.yml"
+        elif [ -d "/opt/homebrew/opt/autocut" ]; then
+            echo "/opt/homebrew/opt/autocut/libexec/config.yml"
+        else
+            echo "config.yml"
+        fi
+    else
+        echo "config.yml"
+    fi
+}
+
+# Update CONFIG_FILE to use the correct path
+CONFIG_FILE=$(get_config_path)
+
 # Function to print colored output
 print_status() {
     echo -e "${GREEN}[INFO]${NC} $1"
@@ -577,6 +605,62 @@ show_cron_help() {
     echo ""
 }
 
+# Function to manage brew service
+manage_service() {
+    print_header
+    print_status "Service Management"
+    echo ""
+    
+    if ! is_brew_service; then
+        print_warning "This appears to be a development installation."
+        print_status "To use brew services, install via: brew install ./Formula/autocut.rb"
+        return
+    fi
+    
+    local choice=$(gum choose \
+        "Start service" \
+        "Stop service" \
+        "Restart service" \
+        "Check service status" \
+        "View service logs" \
+        "Back to main menu")
+    
+    case $choice in
+        "Start service")
+            print_status "Starting autocut service..."
+            brew services start autocut
+            ;;
+        "Stop service")
+            print_status "Stopping autocut service..."
+            brew services stop autocut
+            ;;
+        "Restart service")
+            print_status "Restarting autocut service..."
+            brew services restart autocut
+            ;;
+        "Check service status")
+            print_status "Service status:"
+            brew services list | grep autocut
+            ;;
+        "View service logs")
+            print_status "Recent service logs:"
+            if [ -f "/usr/local/var/log/autocut.log" ]; then
+                tail -20 "/usr/local/var/log/autocut.log"
+            elif [ -f "/opt/homebrew/var/log/autocut.log" ]; then
+                tail -20 "/opt/homebrew/var/log/autocut.log"
+            else
+                print_warning "No log file found"
+            fi
+            ;;
+        "Back to main menu")
+            return
+            ;;
+    esac
+    
+    echo ""
+    gum confirm "Continue with service management" || true
+}
+
 # Main menu function
 main_menu() {
     while true; do
@@ -591,6 +675,7 @@ main_menu() {
             "Remove shortcut" \
             "Toggle shortcut status" \
             "Cron expression help" \
+            "Service management" \
             "Exit")
         
         case $choice in
@@ -623,6 +708,9 @@ main_menu() {
                 show_cron_help
                 echo ""
                 gum confirm "Go back to main menu" || true
+                ;;
+            "Service management")
+                manage_service
                 ;;
             "Exit")
                 print_status "Goodbye!"

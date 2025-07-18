@@ -1,94 +1,142 @@
 # Autocut
 
-A TypeScript-based automation tool that runs scheduled shortcuts and tasks in the background. Autocut uses cron scheduling to execute custom shortcuts at specified intervals.
+A TypeScript-based background service that runs scheduled shortcuts and tasks using cron scheduling. Installable via Homebrew as a macOS service.
 
-## Features
+## Quick Install
 
-- **Background Processing**: Runs as a persistent background service
-- **Cron Scheduling**: Execute shortcuts on custom schedules using cron expressions
-- **Error Recovery**: Built-in error handling with automatic restart capabilities
-- **Configurable**: Easy YAML-based configuration
-- **Event-Driven**: Uses an event bus system for clean architecture
-
-## Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd autocut
+# Install from Homebrew tap (recommended)
+brew tap dvos-tools/autocut
+brew install autocut
+brew services start autocut
+
+# Or install locally
+./install.sh
 ```
 
-2. Install dependencies:
+## What it does
+
+- Runs shortcuts on custom schedules using cron expressions
+- Background service with automatic error recovery
+- Interactive configuration via terminal UI
+- Event-driven architecture with logging
+
+## Installation Options
+
+### 1. Homebrew Tap (Recommended)
+```bash
+brew tap dvos-tools/autocut
+brew install autocut
+```
+
+### 2. Local Installation
+```bash
+./install.sh
+```
+
+### 3. Development
 ```bash
 npm install
-```
-
-3. Build the project:
-```bash
 npm run build
+npm start
 ```
 
 ## Usage
 
-### Start the application:
+### Start the Service
 ```bash
-npm start
+brew services start autocut
 ```
 
-### Development mode:
+### Configure Shortcuts
 ```bash
-npm run dev
+autocut-setup
+```
+
+### Check Status
+```bash
+brew services list | grep autocut
+```
+
+### View Logs
+```bash
+tail -f /usr/local/var/log/autocut.log
 ```
 
 ## Configuration
 
-### Interactive Setup (Recommended)
+The interactive setup tool (`autocut-setup`) guides you through:
+- Adding shortcuts with custom schedules
+- Setting cron expressions
+- Enabling/disabling shortcuts
+- Service management
 
-The easiest way to configure autocut is using the interactive setup wizard:
-
-```bash
-./setup.sh
-```
-
-This will guide you through creating your configuration with a beautiful terminal interface.
-
-### Manual Configuration
-
-Alternatively, you can manually configure your shortcuts in `config.yml`:
-
+Example configuration:
 ```yaml
-# Autocut Configuration File
 shortcuts:
-  - displayName: "Update Focus Mode HA"
+  - displayName: "Update Focus Mode"
     shortcutName: "FocusMode"
-    shortcutInput: {}
-    cronDelay: "*/1 * * * *"  # Every minute
-    delay: 0
-    description: "Gets the current active status by name and syncs it to HA"
+    cronDelay: "*/5 * * * *"  # Every 5 minutes
     enabled: true
 ```
 
-### Configuration Options
+## Service Management
 
-- `displayName`: Human-readable name for the shortcut
-- `shortcutName`: Internal identifier for the shortcut
-- `shortcutInput`: Input parameters for the shortcut (JSON object)
-- `cronDelay`: Cron expression for scheduling (e.g., "*/5 * * * *" for every 5 minutes)
-- `delay`: Additional delay in milliseconds before execution
-- `description`: Description of what the shortcut does
-- `enabled`: Whether the shortcut is active (true/false)
+```bash
+# Start/Stop/Restart
+brew services start autocut
+brew services stop autocut
+brew services restart autocut
+
+# Check status
+brew services list | grep autocut
+
+# View logs
+tail -f /usr/local/var/log/autocut.log
+tail -f /usr/local/var/log/autocut.error.log
+```
 
 ## Development
 
+### Setup Homebrew Tap
+```bash
+./setup-tap.sh
+```
 
 ### Available Scripts
+```bash
+npm run build          # Build for production
+npm run dev            # Development mode
+npm start              # Run built app
+npm run service:start  # Start brew service
+```
 
-- `npm run build`: Build the TypeScript project
-- `npm start`: Run the built application
-- `npm run dev`: Run in development mode with hot reload
+### Test Installation
+```bash
+./test-installation.sh
+```
+
+## Uninstall
+
+```bash
+./uninstall.sh
+```
+
+## Troubleshooting
+
+- **Service won't start**: Check logs with `tail -f /usr/local/var/log/autocut.error.log`
+- **Configuration issues**: Run `autocut-setup` to reconfigure
+- **Installation problems**: Run `./test-installation.sh` to diagnose
+
+## Architecture
+
+- **Background Agent**: Main process with error recovery
+- **Shortcut Manager**: Handles scheduled task execution
+- **Event Bus**: Inter-component communication
+- **Configuration Service**: YAML-based config management
 
 ## Dependencies
 
-- **node-cron**: Cron job scheduling
-- **js-yaml**: YAML configuration parsing
-- **uuid**: Unique identifier generation
+- Node.js 18+
+- Gum (for interactive UI)
+- node-cron, js-yaml, uuid
