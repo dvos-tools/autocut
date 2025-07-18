@@ -42,7 +42,19 @@ npm run dev
 
 ## Configuration
 
-Configure your shortcuts in `config.yml`:
+### Interactive Setup (Recommended)
+
+The easiest way to configure autocut is using the interactive setup wizard:
+
+```bash
+./setup.sh
+```
+
+This will guide you through creating your configuration with a beautiful terminal interface.
+
+### Manual Configuration
+
+Alternatively, you can manually configure your shortcuts in `config.yml`:
 
 ```yaml
 # Autocut Configuration File

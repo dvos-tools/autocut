@@ -11,4 +11,3 @@ shortcuts:
     cronDelay: "*/1 * * * *"
     delay: 0
     description: "Gets the current active status by name and syncs it to HA"
-    enabled: true

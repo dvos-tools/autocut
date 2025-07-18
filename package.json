@@ -6,7 +6,8 @@
   "scripts": {
     "build": "esbuild src/index.ts --bundle --platform=node --target=node18 --outfile=dist/app.js --sourcemap",
     "start": "node dist/app.js",
-    "dev": "ts-node -r tsconfig-paths/register src/index.ts"
+    "dev": "ts-node -r tsconfig-paths/register src/index.ts",
+    "setup": "./setup-config.sh"
   },
   "keywords": [
     "typescript"
