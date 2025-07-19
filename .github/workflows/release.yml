@@ -111,9 +111,6 @@ jobs:
             libexec.install "dist"
             libexec.install "config.yml" if File.exist?("config.yml")
             
-            # Install the plist file
-            prefix.install "com.autocut.plist"
-            
             # Create log directory
             (var/"log").mkpath
             
