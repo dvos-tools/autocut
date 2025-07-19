@@ -19,7 +19,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '22'
         cache: 'npm'
     
     - name: Install dependencies
@@ -97,7 +97,7 @@ jobs:
           url "https://github.com/${{ github.repository }}/releases/download/v$VERSION/autocut-v$VERSION.tar.gz"
           sha256 "$SHA256_VALUE"
           
-          depends_on "node@18"
+          depends_on "node@22"
           depends_on "gum"
           
           def install

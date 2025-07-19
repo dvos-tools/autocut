@@ -47,7 +47,7 @@ fi
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
     print_status "Installing Node.js..."
-    brew install node@18
+    brew install node@22
 fi
 
 # Build the project
