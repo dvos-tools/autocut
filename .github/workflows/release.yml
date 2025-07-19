@@ -84,8 +84,11 @@ jobs:
         # Read SHA256 from file
         SHA256_VALUE=$(cat sha256.txt)
         
+        echo "Updating formula to version: $VERSION"
+        echo "SHA256: $SHA256_VALUE"
+        
         # Create the new formula content
-        cat > Formula/autocut.rb << 'EOF'
+        cat > Formula/autocut.rb << EOF
         class Autocut < Formula
           desc "A background service for running shortcuts on schedule"
           homepage "https://github.com/dvos-tools/autocut"
@@ -139,6 +142,9 @@ jobs:
           end
         end
         EOF
+        
+        echo "Formula updated. Current content:"
+        cat Formula/autocut.rb
     
     - name: Commit and push changes
       run: |
@@ -149,9 +155,21 @@ jobs:
         git config user.name "${{ github.actor }}"
         git config user.email "${{ github.actor }}@users.noreply.github.com"
         
+        # Check git status
+        echo "Git status before adding:"
+        git status
+        
         # Add only the formula file
         git add Formula/autocut.rb
         
-        # Commit and push
-        git commit -m "Update autocut to ${{ github.ref_name }}"
-        git push 
+        # Check git status after adding
+        echo "Git status after adding:"
+        git status
+        
+        # Commit and push (only if there are changes)
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Update autocut to ${{ github.ref_name }}"
+          git push
+        fi 
