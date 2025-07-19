@@ -142,8 +142,16 @@ jobs:
     
     - name: Commit and push changes
       run: |
+        # Clean up temporary files
+        rm -f sha256.txt
+        
+        # Configure git
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
+        
+        # Add only the formula file
         git add Formula/autocut.rb
+        
+        # Commit and push
         git commit -m "Update autocut to ${{ github.ref_name }}"
         git push 
