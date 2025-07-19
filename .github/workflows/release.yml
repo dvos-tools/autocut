@@ -145,9 +145,9 @@ jobs:
         # Clean up temporary files
         rm -f sha256.txt
         
-        # Configure git
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+        # Configure git with the actual user
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
         
         # Add only the formula file
         git add Formula/autocut.rb
