@@ -127,7 +127,7 @@ jobs:
           end
           
           service do
-            run [opt_bin/"node", opt_libexec/"dist/app.js"]
+            run ["#{HOMEBREW_PREFIX}/bin/node", opt_libexec/"dist/app.js"]
             working_dir opt_libexec
             log_path var/"log/autocut.log"
             error_log_path var/"log/autocut.error.log"
