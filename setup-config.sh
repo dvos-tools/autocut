@@ -186,8 +186,7 @@ add_shortcut() {
     echo "Enabled: $enabled"
     echo ""
     
-    local confirm=$(gum confirm "Add this shortcut?")
-    if [ "$confirm" = "true" ]; then
+    if gum confirm "Add this shortcut?"; then
         # Add the shortcut to the config file
         # Find the shortcuts section and add the new shortcut
         local temp_file=$(mktemp)
@@ -267,8 +266,7 @@ remove_shortcut() {
     local selected=$(gum choose "${shortcuts[@]}")
     
     if [ -n "$selected" ]; then
-        local confirm=$(gum confirm "Remove shortcut '$selected'?")
-        if [ "$confirm" = "true" ]; then
+        if gum confirm "Remove shortcut '$selected'?"; then
             # Remove the selected shortcut
             local temp_file=$(mktemp)
             local in_shortcut=false
@@ -428,8 +426,7 @@ edit_shortcut() {
         echo "Enabled: $current_enabled → $new_enabled"
         echo ""
         
-        local confirm=$(gum confirm "Apply these changes?")
-        if [ "$confirm" = "true" ]; then
+        if gum confirm "Apply these changes?"; then
             # Update the shortcut in the config file
             local temp_file=$(mktemp)
             local in_selected_shortcut=false
