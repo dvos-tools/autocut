@@ -6,8 +6,8 @@ A TypeScript-based background service that runs scheduled shortcuts and tasks us
 
 ```bash
 # Install from Homebrew tap (recommended)
-brew tap dvos-tools/autocut
-brew install autocut
+brew install dvos-tools/autocut/autocut
+
 brew services start autocut
 
 # Or install locally
