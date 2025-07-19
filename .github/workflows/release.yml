@@ -94,7 +94,7 @@ jobs:
           homepage "https://github.com/dvos-tools/autocut"
           version "$VERSION"
           
-          url "https://github.com/${{ github.repository }}/releases/download/v$VERSION/autocut-$VERSION.tar.gz"
+          url "https://github.com/${{ github.repository }}/releases/download/v$VERSION/autocut-v$VERSION.tar.gz"
           sha256 "$SHA256_VALUE"
           
           depends_on "node@18"
