@@ -9,6 +9,9 @@ build/
 # Environment variables
 .env
 
+# Configuration files
+config.yml
+
 # IDE and editor files
 .vscode/
 .idea/

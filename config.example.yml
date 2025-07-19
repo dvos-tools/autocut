@@ -1,0 +1,21 @@
+# Autocut Configuration File Example
+# This file defines the cron delay and shortcuts for the autocut application
+# Copy this file to config.yml and customize it for your needs
+
+# Cron delay in cron format (e.g., "*/5 * * * *" for every 5 minutes)
+
+# List of shortcuts to be processed
+shortcuts:
+  - displayName: "Example Shortcut"
+    shortcutName: "ExampleShortcut"
+    shortcutInput: {}
+    cronDelay: "*/5 * * * *"
+    delay: 0
+    description: "An example shortcut that runs every 5 minutes"
+
+  - displayName: "Another Example"
+    shortcutName: "AnotherExample"
+    shortcutInput: {}
+    cronDelay: "0 */2 * * *"
+    delay: 0
+    description: "Another example shortcut that runs every 2 hours" 
