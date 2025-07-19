@@ -47,6 +47,15 @@ jobs:
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Output SHA256 for next job
+      run: echo "${{ env.SHA256 }}" > sha256.txt
+    
+    - name: Upload SHA256 artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sha256
+        path: sha256.txt
 
   update-tap:
     needs: build
@@ -58,14 +67,26 @@ jobs:
         repository: ${{ github.repository_owner }}/homebrew-autocut
         token: ${{ secrets.TAP_TOKEN }}
     
+    - name: Download SHA256
+      uses: actions/download-artifact@v4
+      with:
+        name: sha256
+        path: .
+    
+    - name: Read SHA256
+      run: echo "SHA256=$(cat sha256.txt)" >> $GITHUB_ENV
+    
     - name: Update formula
       run: |
         # Extract version from tag (remove 'v' prefix)
         VERSION=${GITHUB_REF#refs/tags/v}
         
+        # Read SHA256 from file
+        SHA256_VALUE=$(cat sha256.txt)
+        
         # Update the formula file
         sed -i "s/version \"[^\"]*\"/version \"$VERSION\"/" Formula/autocut.rb
-        sed -i "s/sha256 \"[^\"]*\"/sha256 \"${{ env.SHA256 }}\"/" Formula/autocut.rb
+        sed -i "s/sha256 \"[^\"]*\"/sha256 \"$SHA256_VALUE\"/" Formula/autocut.rb
         sed -i "s|url \"[^\"]*\"|url \"https://github.com/${{ github.repository }}/releases/download/v$VERSION/autocut-$VERSION.tar.gz\"|" Formula/autocut.rb
     
     - name: Commit and push changes
