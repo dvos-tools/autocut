@@ -25,6 +25,19 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
+    - name: Update package.json version from tag
+      run: |
+        # Extract version from tag (remove 'v' prefix)
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "Updating package.json version to: $VERSION"
+        
+        # Update package.json version using npm version (without creating a new commit)
+        npm version $VERSION --no-git-tag-version --allow-same-version
+        
+        # Verify the update
+        echo "Updated package.json version:"
+        grep '"version"' package.json
+    
     - name: Build application
       run: npm run build
     
@@ -56,6 +69,24 @@ jobs:
       with:
         name: sha256
         path: sha256.txt
+    
+    - name: Commit updated package.json
+      run: |
+        # Configure git
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # Check if package.json was modified
+        if git diff --quiet package.json; then
+          echo "No changes to package.json"
+        else
+          # Add and commit the updated package.json
+          git add package.json
+          git commit -m "chore: sync package.json version with release tag ${{ github.ref_name }}"
+          
+          # Push the changes back to the repository
+          git push origin HEAD:${{ github.ref }}
+        fi
 
   update-tap:
     needs: build
