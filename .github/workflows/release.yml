@@ -84,8 +84,8 @@ jobs:
           git add package.json
           git commit -m "chore: sync package.json version with release tag ${{ github.ref_name }}"
           
-          # Push the changes back to the repository
-          git push origin HEAD:${{ github.ref }}
+          # Push the changes to the main branch instead of the tag
+          git push origin HEAD:main
         fi
 
   update-tap:
